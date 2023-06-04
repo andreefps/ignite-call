@@ -48,6 +48,7 @@ export default function Register() {
       }
       console.log(error)
     }
+    return router.push('/register/connect-calendar')
   }
   return (
     <Container>
@@ -74,7 +75,7 @@ export default function Register() {
           <TextInput placeholder='Seu Nome' {...register('name')} />
           {errors.name && <FormError>{errors.name.message}</FormError>}
         </label>
-        <Button type='submit'>
+        <Button type='submit' disabled={isSubmitting}>
           Proximo passo <ArrowRight />
         </Button>
       </Form>

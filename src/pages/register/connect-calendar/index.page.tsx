@@ -1,16 +1,19 @@
-import { Button, Heading, MultiStep, Text, TextInput } from "@ignite-ui/react"
-import { Container, Header } from "../styles"
-import { ArrowRight, Check } from "phosphor-react"
-import { AuthError, ConnectBox, ConnectItem } from "./styles"
-import { signIn, useSession } from "next-auth/react"
-import { useRouter } from "next/router"
+import { Button, Heading, MultiStep, Text, TextInput } from '@ignite-ui/react'
+import { Container, Header } from '../styles'
+import { ArrowRight, Check } from 'phosphor-react'
+import { AuthError, ConnectBox, ConnectItem } from './styles'
+import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
-export default function Register() {
-  //async function handleRegister(data) {}
+export default function ConnectCalendar() {
   const router = useRouter()
   const session = useSession()
   const hasAuthError = !!router.query.error
-  const hasSignedIn = session.status === "authenticated"
+  const hasSignedIn = session.status === 'authenticated'
+
+  async function handleNavigateToNextStep() {
+    await router.push('/register/time-intervals')
+  }
   return (
     <Container>
       <Header>
@@ -28,7 +31,7 @@ export default function Register() {
             <Button
               variant="secondary"
               size="sm"
-              onClick={() => signIn("google")}
+              onClick={() => signIn('google')}
             >
               Conectar
               <ArrowRight />
@@ -36,17 +39,22 @@ export default function Register() {
           ) : (
             <Button variant="secondary" size="sm" disabled>
               Conectado
-              <Check size={"sm"} />
+              <Check size={'sm'} />
             </Button>
           )}
         </ConnectItem>
         {hasAuthError && (
-          <AuthError size={"sm"}>
+          <AuthError size={'sm'}>
             Falha ao se conectar ao Google, verifique se voce habilitou as
-            permissoes ao Google Calendar{" "}
+            permissoes ao Google Calendar{' '}
           </AuthError>
         )}
-        <Button variant={"primary"} type="submit" disabled={!hasSignedIn}>
+        <Button
+          onClick={handleNavigateToNextStep}
+          variant={'primary'}
+          type="submit"
+          disabled={!hasSignedIn || !hasAuthError}
+        >
           Proximo passo <ArrowRight />
         </Button>
       </ConnectBox>
